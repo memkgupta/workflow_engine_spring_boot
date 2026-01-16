@@ -1,0 +1,41 @@
+{
+  "name": "EMAIL_LOGIN_WORKFLOW",
+  "nodes": {
+    "START": {
+      "type": "start",
+      "next": "IDENTITY_VERIFICATION"
+    },
+    "IDENTITY_VERIFICATION": {
+      "type": "task",
+      "next": "FETCH_CURRENT_AUTHS"
+    },
+    "EMAIL_AUTH_EXISTS": {
+      "type": "condition",
+      "YES": "VERIFY_CREDENTIALS",
+      "NO": "PROMPT_LINK_ACCOUNT"
+    },
+    "PROMPT_LINK_ACCOUNT": {
+      "type": "child_workflow",
+      "workflow": "LINK_ACCOUNT",
+      "next": "FINAL_RISK_ASSESMENT"
+    },
+    "VERIFY_CREDENTIALS": {
+      "type": "task",
+      "next": "MFA_ENABLED_CHECK"
+    },
+    "MFA_ENABLED_CHECK": {
+      "type": "condition",
+      "YES": "MFA",
+      "NO": "END"
+    },
+    "MFA": {
+      "type": "child_workflow",
+      "workflow": "MFA",
+      "next": "END"
+    },
+
+    "END": {
+      "type": "end"
+    }
+  }
+}

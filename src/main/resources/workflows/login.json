@@ -1,0 +1,36 @@
+{
+  "name": "LOGIN",
+  "nodes": {
+    "start":
+    {
+      "type": "start",
+      "next": "CHECK_AUTH_TYPE"
+    },
+    "CHECK_AUTH_TYPE":
+    {
+      "type": "case",
+      "cases": {
+      "EMAIL": "EMAIL_LOGIN_WORKFLOW",
+      "OAUTH": "OAUTH_LOGIN_WORKFLOW",
+      "GUEST": "GUEST_LOGIN_WORKFLOW"
+    },
+      "next": "FINAL_RISK_ASSESMENT"
+    },
+    "FINAL_RISK_ASSESMENT": {
+      "type": "task",
+      "next": "GENERATE_AND_SEND_TOKENS"
+    },
+    "GENERATE_AND_SEND_TOKENS":{
+      "type": "task",
+      "next": "END"
+    },
+    "END": {
+      "type": "END"
+    }
+  },
+  "depends_on": [
+    "EMAIL_LOGIN_WORKFLOW",
+    "OAUTH_LOGIN_WORKFLOW",
+    "GUEST_LOGIN_WORKFLOW"
+  ]
+}
