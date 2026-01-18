@@ -15,6 +15,7 @@ import java.util.UUID;
 public class WorkflowSession{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(columnDefinition = "uuid")
     private UUID id;
     @ElementCollection
     private HashMap<String,Object> attributes;

@@ -13,15 +13,19 @@ public class WorkflowContext{
     private final StatePersistenceService persistenceService;
     @Getter
     protected HashMap<String,Object> attributes;
-    private String workflowName;
+    @Getter
+    protected String workflowName;
     public WorkflowContext(StatePersistenceService persistenceService, String entityName, Object entityIdentifier) {
         this.persistenceService = persistenceService;
         this.entityName = entityName;
         this.entityIdentifier = entityIdentifier;
 
     }
+    @Getter
     protected final String entityName;
+    @Getter
     protected final Object entityIdentifier;
+    @Getter
     protected UUID sessionId;
     @Getter
     protected boolean isCancelled;
@@ -39,6 +43,9 @@ public class WorkflowContext{
         this.current = current.getNext(this);
 
     }
-
+    public String getCurrentNodeName()
+    {
+        return this.current.getClass().getAnnotation(Node.class).name();
+    }
 
 }
