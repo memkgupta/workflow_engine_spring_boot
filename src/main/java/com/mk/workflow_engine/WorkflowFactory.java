@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 public class WorkflowFactory {
     private final HashMap<String,WorkflowNode> nodeMap;
     private final ResourcePatternResolver resolver;

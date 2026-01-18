@@ -4,16 +4,28 @@ import com.mk.workflow_engine.exceptions.InvalidWorkflowStateException;
 import com.mk.workflow_engine.exceptions.WorkflowTransitionException;
 
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.UUID;
 
 
+@Service
 public class WorkflowOrchestrator {
     private final WorkflowFactory workflowFactory;
+
     private final StatePersistenceService persistenceService;
-    public WorkflowOrchestrator(WorkflowFactory workflowFactory, StatePersistenceService persistenceService) {
-        this.workflowFactory = workflowFactory;
+    public WorkflowOrchestrator(ObjectProvider<WorkflowFactory> workflowFactoryProvider, StatePersistenceService persistenceService) {
+        var factory = workflowFactoryProvider.getIfAvailable();
+        if(factory == null)
+        {
+            throw new IllegalArgumentException("Bean of WorkflowFactory is required");
+
+        }
+        this.workflowFactory = factory;
         this.persistenceService = persistenceService;
     }
     public WorkflowContext initiate(String workflow_name , HashMap<String,Object> initState , String entityName , Object entityIdentifier)

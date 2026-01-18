@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import java.util.function.Function;
 
-@Builder
+
 public abstract class ConditionNode extends WorkflowNode{
     @Setter
     private WorkflowNode positive;
