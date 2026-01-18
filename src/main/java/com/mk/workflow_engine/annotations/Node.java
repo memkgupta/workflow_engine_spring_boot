@@ -5,7 +5,7 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Node {
-    String state();
+
     String workflowName();
     String name();
     boolean isRoot();

@@ -145,13 +145,12 @@ public class WorkflowFactory {
         HashMap<String,Integer> indegs = new HashMap<>();
         Queue<String> q = new LinkedList<>();
 
-        for(var e : dependencyGraph.entrySet())
+        for(var e : indegree.entrySet())
         {
-            indegs.put(e.getKey(),dependencyGraph.get(e.getKey()).size());
-            if(indegs.get(e.getKey()) == 0)
-            {
-                q.offer(e.getKey());
-            }
+           if(e.getValue() == 0)
+           {
+               q.add(e.getKey());
+           }
         }
         Map<String,JsonNode> jsonWorkflowMap = original.stream().collect(Collectors.toMap(node->node.get("name").asString(),
                 node->node));
@@ -163,13 +162,14 @@ public class WorkflowFactory {
             res.add(jsonWorkflowMap.get(nodeKey));
             for(var e : deps)
             {
-                indegs.put(e, indegs.get(e)-1);
-                if(indegs.get(e) == 0)
+                indegree.put(e, indegree.get(e)-1);
+                if(indegree.get(e) == 0)
                 {
                     q.offer(e);
                 }
             }
         }
+
         if (res.size() != original.size()) {
             throw new WorkflowDependencyException("Cycle detected in workflow dependency graph");
 
@@ -242,14 +242,14 @@ public class WorkflowFactory {
             }
             CaseNode<Object> caseNode = (CaseNode<Object>) workflowNode;
             JsonNode cases = node.get("cases");
-            Map<String, String> casesMap = new HashMap<>();
+            HashMap<String, String> casesMap = new HashMap<>();
             cases.forEachEntry((key,value)->{
                 casesMap.put(key,value.asString());
             });
             Map<Object, WorkflowNode> updated = new HashMap<>();
 
-            for (Map.Entry<Object, WorkflowNode> entry : caseNode.getCases().entrySet()) {
-                Object key = entry.getKey();
+            for (Map.Entry<String, String> entry : casesMap.entrySet()) {
+                String key = entry.getKey();
                 WorkflowNode nxt;
 
                 String target = casesMap.get(key);
