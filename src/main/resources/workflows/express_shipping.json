@@ -1,0 +1,16 @@
+{
+  "name": "EXPRESS_SHIPPING",
+  "nodes": {
+    "EXPRESS_SHIPPING_START": {
+      "type": "start",
+      "next": "ASSIGN_PRIORITY_PACKER"
+    },
+    "ASSIGN_PRIORITY_PACKER": {
+      "type": "task",
+      "next": "EXPRESS_SHIPPING_END"
+    },
+    "EXPRESS_SHIPPING_END": {
+      "type": "end"
+    }
+  }
+}

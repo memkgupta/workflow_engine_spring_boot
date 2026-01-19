@@ -40,4 +40,8 @@ public class OrderPipelineNodes  {
     public OrderPipelineCreate orderPipelineCreate() {
         return new OrderPipelineCreate(orderService,objectMapper);
     }
+    @Bean
+    public OrderPipelineEnd orderPipelineEnd() {
+        return new OrderPipelineEnd();
+    }
 }

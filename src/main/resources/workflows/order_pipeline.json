@@ -1,0 +1,40 @@
+{
+  "name": "ORDER_PIPELINE",
+  "nodes": {
+    "START": {
+      "type": "start",
+      "next": "CREATE_ORDER"
+    },
+
+    "CREATE_ORDER": {
+      "type": "task",
+      "next": "PAYMENT_SUCCESS?"
+    },
+
+    "PAYMENT_SUCCESS?": {
+      "type": "condition",
+      "YES": "DELIVERY_TYPE",
+      "NO": "PAYMENT_FAILED"
+    },
+
+    "PAYMENT_FAILED": {
+      "type": "task",
+      "next": "ORDER_END"
+    },
+
+    "DELIVERY_TYPE": {
+      "type": "case",
+      "cases": {
+        "EXPRESS": "EXPRESS_SHIPPING",
+        "STANDARD": "STANDARD_SHIPPING"
+      }
+    },
+"ORDER_END": {
+      "type": "end"
+    }
+  },
+  "depends_on": [
+    "EXPRESS_SHIPPING",
+    "STANDARD_SHIPPING"
+  ]
+}

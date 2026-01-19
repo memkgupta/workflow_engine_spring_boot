@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 public @interface Node {
 
     String workflowName();
-    String name();
+    String id();
     boolean isRoot();
     String type();
 }

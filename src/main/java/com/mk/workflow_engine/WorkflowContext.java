@@ -45,7 +45,7 @@ public class WorkflowContext{
     }
     public String getCurrentNodeName()
     {
-        return this.current.getClass().getAnnotation(Node.class).name();
+        return this.current.getClass().getAnnotation(Node.class).id();
     }
 
 }

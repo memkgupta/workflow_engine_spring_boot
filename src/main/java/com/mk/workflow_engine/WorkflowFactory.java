@@ -45,7 +45,7 @@ public class WorkflowFactory {
                );
            }
            String workflowName = annotation.workflowName();
-           String name = annotation.name();
+           String name = annotation.id();
            nodeMap.put(name,node);
            if(annotation.isRoot())
            {
@@ -189,7 +189,10 @@ public class WorkflowFactory {
                 return super.getNext(ctx);
             }
         };
-        JsonNode start = nodes.get("start");
+        JsonNode start = nodes.propertyStream()
+                .filter(p->p.getValue().get("type").asString().equals("start")).toList()
+                .get(0)
+                .getValue();
         if (start == null || !start.has("next")) {
             throw new WorkflowBuildException("Workflow start node missing next");
         }
@@ -207,7 +210,7 @@ public class WorkflowFactory {
 
         }
         String type = node.get("type").stringValue();
-        if(type.equals("END")) return new WorkflowNode() {
+        if(type.equals("end")) return new WorkflowNode() {
             @Override
             public void setNext(WorkflowNode next) {
 
@@ -228,7 +231,6 @@ public class WorkflowFactory {
         {
             if (!node.has("YES") || !node.has("NO")) {
                 throw new WorkflowBuildException("Condition node '" + nodeName + "' missing YES/NO branch");
-
             }
             ConditionNode cndNode = (ConditionNode) workflowNode;
             cndNode.setPositive(rec(node.get("YES").asString(),tree));

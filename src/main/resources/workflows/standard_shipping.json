@@ -1,0 +1,16 @@
+{
+  "name": "STANDARD_SHIPPING",
+  "nodes": {
+    "START": {
+      "type": "start",
+      "next": "ASSIGN_NORMAL_PACKER"
+    },
+    "ASSIGN_NORMAL_PACKER": {
+      "type": "task",
+      "next": "STANDARD_SHIPPING_END"
+    },
+    "STANDARD_SHIPPING_END": {
+      "type": "end"
+    }
+  }
+}
