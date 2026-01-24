@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public abstract class NodeParserFactory<I> {
+public  class NodeParserFactory<I> {
 
     private final List<NodeParser<I>> parsers;
 

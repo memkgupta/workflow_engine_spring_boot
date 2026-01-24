@@ -4,7 +4,7 @@ import com.mk.workflow_engine.WorkflowNode;
 import com.mk.workflow_engine.workflows.enums.NodeTypeEnum;
 import tools.jackson.databind.JsonNode;
 
-public interface NodeHandler {
+public interface NodeHandler<T extends NodeDefinition> {
     boolean supports(NodeTypeEnum type);
-    WorkflowNode build(NodeDefinition definition, WorkflowBuildContext ctx);
+    WorkflowNode build(T definition, WorkflowBuildContext ctx);
 }

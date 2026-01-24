@@ -3,6 +3,7 @@ package com.mk.workflow_engine;
 import com.mk.workflow_engine.exceptions.WorkflowParseException;
 import com.mk.workflow_engine.workflows.NodeDefinition;
 import com.mk.workflow_engine.workflows.NodeParserFactory;
+import com.mk.workflow_engine.workflows.WorkflowBuildContext;
 import com.mk.workflow_engine.workflows.WorkflowDefinition;
 import com.mk.workflow_engine.workflows.enums.NodeTypeEnum;
 import com.mk.workflow_engine.workflows.strategies.WorkflowDeserializer;
@@ -52,24 +53,27 @@ private final NodeParserFactory<JsonNode> nodeParserFactory;
         }
 
         Map<String, NodeDefinition> parsedNodes = new HashMap<>();
-
+        Map<String,JsonNode> nodeMap = new HashMap<>();
         nodes.forEachEntry((key,value) -> {
-            parsedNodes.put(key, parseNode(key, value));
+            NodeDefinition parsedNode = parseNode(key, value, def);
+
+            parsedNodes.put(key,parsedNode);
+            nodeMap.put(key,value);
+
         });
 
         def.setNodes(parsedNodes.values().stream().toList());
         return def;
     }
 
-    private NodeDefinition parseNode(String nodeName, JsonNode json) {
+    private NodeDefinition parseNode(String nodeName, JsonNode json, WorkflowDefinition workflowDefinition) {
 
         if (!json.has("type")) {
             throw new WorkflowParseException("Node '" + nodeName + "' missing type");
         }
-
         String type = json.get("type").asString();
-        NodeTypeEnum nodeType = NodeTypeEnum.valueOf(type);
-        return nodeParserFactory.getParser(nodeType).parse(json);
+        NodeTypeEnum nodeType = NodeTypeEnum.valueOf(type.toUpperCase());
+        return nodeParserFactory.getParser(nodeType).parse(json,workflowDefinition);
 //        switch (type) {
 //            case "task" -> {
 //                if (!json.has("next"))

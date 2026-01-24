@@ -19,14 +19,14 @@ public class WorkflowConfig {
         this.objectMapper = objectMapper;
         this.applicationContext = applicationContext;
     }
-    @Bean
-    public WorkflowFactory workflowFactory() {
-        WorkflowFactory factory = new WorkflowFactory(resolver, objectMapper, applicationContext);
-        try {
-            factory.init();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return factory;
-    }
+//    @Bean
+//    public WorkflowFactory workflowFactory() {
+//        WorkflowFactory factory = new WorkflowFactory(resolver, objectMapper, applicationContext);
+//        try {
+//            factory.init();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return factory;
+//    }
 }

@@ -1,40 +1,49 @@
 {
+  "namespace": "order",
+  "version": 1,
   "name": "ORDER_PIPELINE",
   "nodes": {
     "START": {
       "type": "start",
+      "name": "START_ORDER_WORKFLOW",
       "next": "CREATE_ORDER"
     },
 
     "CREATE_ORDER": {
       "type": "task",
-      "next": "PAYMENT_SUCCESS?"
+      "name": "CREATE_ORDER",
+      "next": "CHECK_PAYMENT_SUCCESS"
     },
 
     "PAYMENT_SUCCESS?": {
       "type": "condition",
+      "name": "CHECK_PAYMENT_SUCCESS",
       "YES": "DELIVERY_TYPE",
-      "NO": "PAYMENT_FAILED"
+      "NO": "HANDLE_PAYMENT_FAILURE"
     },
 
     "PAYMENT_FAILED": {
       "type": "task",
+      "name": "HANDLE_PAYMENT_FAILURE",
       "next": "ORDER_END"
     },
 
     "DELIVERY_TYPE": {
       "type": "case",
+      "name": "DELIVERY_TYPE",
       "cases": {
-        "EXPRESS": "EXPRESS_SHIPPING",
-        "STANDARD": "STANDARD_SHIPPING"
+        "EXPRESS": "shipping:EXPRESS_SHIPPING:1",
+        "STANDARD": "shipping:STANDARD_SHIPPING:1"
       }
     },
-"ORDER_END": {
-      "type": "end"
+
+    "ORDER_END": {
+      "type": "end",
+      "name": "ORDER_END"
     }
   },
   "depends_on": [
-    "EXPRESS_SHIPPING",
-    "STANDARD_SHIPPING"
+    "shipping:EXPRESS_SHIPPING:1",
+    "shipping:STANDARD_SHIPPING:1"
   ]
 }

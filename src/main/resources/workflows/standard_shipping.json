@@ -1,16 +1,23 @@
 {
+  "namespace": "shipping",
+  "version": 1,
   "name": "STANDARD_SHIPPING",
   "nodes": {
     "START": {
       "type": "start",
-      "next": "ASSIGN_NORMAL_PACKER"
+      "name": "START_STANDARD_SHIPPING",
+      "next": "ASSIGN_NORMAL_PACKER_TASK"
     },
+
     "ASSIGN_NORMAL_PACKER": {
       "type": "task",
+      "name": "ASSIGN_NORMAL_PACKER_TASK",
       "next": "STANDARD_SHIPPING_END"
     },
+
     "STANDARD_SHIPPING_END": {
-      "type": "end"
+      "type": "end",
+      "name": "STANDARD_SHIPPING_END"
     }
   }
 }

@@ -14,7 +14,7 @@ import tools.jackson.databind.JsonNode;
 public class JsonWorkflowParser extends WorkflowParser<JsonNode, WorkflowDefinition> {
     private final WorkflowDeserializer<JsonNode, WorkflowDefinition> deserializer;
 
-    public JsonWorkflowParser(WorkflowDeserializer<JsonNode, WorkflowDefinition> deserializer, WorkflowRegistry registry) {
+    public JsonWorkflowParser(WorkflowDeserializer<JsonNode, WorkflowDefinition> deserializer) {
         super(deserializer);
         this.deserializer = deserializer;
 
@@ -30,6 +30,7 @@ public class JsonWorkflowParser extends WorkflowParser<JsonNode, WorkflowDefinit
         if(workflowDefinition.getName() == null || workflowDefinition.getName().isEmpty()){
             throw new WorkflowParseException("Workflow name not found");
         }
+
         for(String dep : workflowDefinition.getDependsOn())
         {
             if(!workflowDefinition.getDependsOn().contains(dep))

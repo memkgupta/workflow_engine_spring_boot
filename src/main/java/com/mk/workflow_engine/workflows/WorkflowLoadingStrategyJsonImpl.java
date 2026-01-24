@@ -42,6 +42,7 @@ public class WorkflowLoadingStrategyJsonImpl implements WorkflowLoadingStrategy 
         catch (IOException ex){
             throw new WorkflowParseException("Could not load workflows", ex);
         }
+
         return workflowDefinitions;
     }
 

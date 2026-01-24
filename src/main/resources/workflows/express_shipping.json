@@ -1,16 +1,23 @@
 {
   "name": "EXPRESS_SHIPPING",
+  "namespace": "shipping",
+  "version": 1,
   "nodes": {
     "EXPRESS_SHIPPING_START": {
       "type": "start",
-      "next": "ASSIGN_PRIORITY_PACKER"
+      "name": "START_EXPRESS_SHIPPING",
+      "next": "ASSIGN_PRIORITY_PACKER_TASK"
     },
+
     "ASSIGN_PRIORITY_PACKER": {
       "type": "task",
-      "next": "EXPRESS_SHIPPING_END"
+      "name": "ASSIGN_PRIORITY_PACKER_TASK",
+      "next": "END_EXPRESS_SHIPPING"
     },
+
     "EXPRESS_SHIPPING_END": {
-      "type": "end"
+      "type": "end",
+      "name": "END_EXPRESS_SHIPPING"
     }
   }
 }

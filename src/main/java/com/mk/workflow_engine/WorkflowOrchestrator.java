@@ -3,6 +3,7 @@ package com.mk.workflow_engine;
 import com.mk.workflow_engine.exceptions.InvalidWorkflowStateException;
 import com.mk.workflow_engine.exceptions.WorkflowTransitionException;
 
+import com.mk.workflow_engine.workflows.WorkflowFactory;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,8 @@ public class WorkflowOrchestrator {
     private final WorkflowFactory workflowFactory;
 
     private final StatePersistenceService persistenceService;
-    public WorkflowOrchestrator(ObjectProvider<WorkflowFactory> workflowFactoryProvider, StatePersistenceService persistenceService) {
-        var factory = workflowFactoryProvider.getIfAvailable();
-        if(factory == null)
-        {
-            throw new IllegalArgumentException("Bean of WorkflowFactory is required");
+    public WorkflowOrchestrator(com.mk.workflow_engine.workflows.WorkflowFactory factory, StatePersistenceService persistenceService) {
 
-        }
         this.workflowFactory = factory;
         this.persistenceService = persistenceService;
     }

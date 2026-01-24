@@ -12,7 +12,7 @@ import java.util.Map;
 public class WorkflowNodeRegistry {
     // fetch all the beans of the WorkflowNode
     private final Map<String, WorkflowNode> nodes = new HashMap<>();
-
+    private final Map<String,NodeDefinition> nodeDefinitions = new HashMap<>();
     public WorkflowNodeRegistry(ApplicationContext applicationContext) {
 
 
@@ -36,6 +36,10 @@ public class WorkflowNodeRegistry {
     public WorkflowNode getWorkflowNode(String id) {
         return nodes.get(id);
     }
-
-
+    public NodeDefinition getNodeDefinition(String id) {
+        return nodeDefinitions.get(id);
+    }
+    public void registerDefinition(String id , NodeDefinition nodeDefinition) {
+        nodeDefinitions.put(id, nodeDefinition);
+    }
 }

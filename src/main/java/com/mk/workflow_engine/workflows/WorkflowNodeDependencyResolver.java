@@ -1,6 +1,8 @@
 package com.mk.workflow_engine.workflows;
 
 import com.mk.workflow_engine.exceptions.WorkflowDependencyException;
+import com.mk.workflow_engine.exceptions.WorkflowParseException;
+import com.mk.workflow_engine.workflows.enums.NodeTypeEnum;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.JsonNode;
@@ -11,16 +13,22 @@ import java.util.stream.Collectors;
 @Component
 public class WorkflowNodeDependencyResolver {
     private final Map<String, Integer> indegree = new HashMap<>();
-    private final HashMap<String,List<String>> dependencyGraph = new HashMap<>();
+
+     private final HashMap<String,List<String>> dependencyGraph = new HashMap<>();
     @Getter
     private final List<WorkflowDefinition> sortedWorkflows = new ArrayList<>();
-    public WorkflowNodeDependencyResolver(WorkflowLoader workflowLoader) {
+    private final WorkflowNodeRegistry nodeRegistry;
+    public WorkflowNodeDependencyResolver(WorkflowLoader workflowLoader, WorkflowNodeRegistry nodeRegistry) {
+        this.nodeRegistry = nodeRegistry;
 
         Set<String> workflowNames = workflowLoader.getWorkflowNames();
+        // todo link the node to their next here
+
+
 
         for (WorkflowDefinition workflow :workflowLoader.getWorkflowDefinitions()) {
 
-            String name = workflow.getName();
+            String name = workflow.getId();
             indegree.putIfAbsent(name, 0);
 
             List<String> dependencies = workflow.getDependsOn();
@@ -51,6 +59,16 @@ public class WorkflowNodeDependencyResolver {
                       dependencyGraph
                 )
         );
+        buildChain(
+                workflowLoader.getWorkflowDefinitions()
+        );
+    for(WorkflowDefinition workflow : sortedWorkflows){
+        for(NodeDefinition node : workflow.getNodes()){
+            nodeRegistry.registerDefinition(
+                    node.getId(),node
+            );
+        }
+    }
     }
     private static List<WorkflowDefinition> topologicalSort(Map<String,WorkflowDefinition> workflowMap , Map<String, Integer> indegree , Map<String, List<String>> dependencyGraph)
     {
@@ -86,5 +104,41 @@ public class WorkflowNodeDependencyResolver {
 
         }
         return res;
+    }
+    private void buildChain(List<WorkflowDefinition> workflows)
+    {
+        for(WorkflowDefinition workflow : workflows)
+        {
+            List<NodeDefinition> nodeDefinitions = workflow.getNodes();
+            Map<String,NodeDefinition> workflowNodes = new HashMap<>();
+            workflowNodes.putAll(
+                    nodeDefinitions.stream().collect(Collectors.toMap(NodeDefinition::getId, nodeDefinition -> nodeDefinition))
+            );
+            for(NodeDefinition nodeDefinition : nodeDefinitions)
+            {
+                if(!nodeDefinition.type.equals(NodeTypeEnum.TASK) && !nodeDefinition.type.equals(NodeTypeEnum.START)) continue;
+                String nextId = nodeDefinition.getNextId();
+                if(workflowNodes.containsKey(nextId))
+                {
+                    // node in the workflow itself
+                    nodeDefinition.setNext(workflowNodes.get(nextId));
+                }
+                else {
+                    WorkflowDefinition nextWorkflow = workflows
+                            .stream().filter(
+                                    w->w.getId().equals(nextId)
+                            ).findFirst().orElse(null);
+                    if(nextWorkflow == null)
+                    {
+                        throw new WorkflowParseException("No next "+workflow.getId()+" in workflow node "+nodeDefinition.getId()+" for next "+ nextId);
+                    }
+                    nodeDefinition.setNext(
+                            nextWorkflow.getNodes().stream().filter(
+                                    n->n.getType().equals(NodeTypeEnum.START)
+                            ).findFirst().orElseThrow(() -> new WorkflowParseException("No next"))
+                    );
+                }
+            }
+        }
     }
 }

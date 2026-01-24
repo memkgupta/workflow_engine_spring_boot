@@ -6,14 +6,25 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
+
 public class WorkflowBuildContext {
     @Getter
     private final Map<String,WorkflowDefinition> definitions = new HashMap<>();
-    public WorkflowBuildContext(WorkflowNodeDependencyResolver dependencyResolver, WorkflowNodeRegistry workflowNodeRegistry, WorkflowRegistry workflowRegistry) {
-        for(WorkflowDefinition d : dependencyResolver.getSortedWorkflows())
-        {
-            definitions.put(d.getId(), d);
+    @Getter
+    private final WorkflowDefinition workflowDefinition;
+    @Getter
+    private final Map<String,NodeDefinition> nodes = new HashMap<>();
+    public WorkflowBuildContext(WorkflowDefinition workflowDefinition,WorkflowNodeDependencyResolver nodeResolver) {
+
+        this.workflowDefinition = workflowDefinition;
+        for(NodeDefinition nodeDefinition : workflowDefinition.getNodes()) {
+            nodes.put(nodeDefinition.getName(), nodeDefinition);
         }
+        for(WorkflowDefinition def : nodeResolver.getSortedWorkflows())
+        {
+            definitions.put(def.getName(), def);
+        }
+
+
     }
 }

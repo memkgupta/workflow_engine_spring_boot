@@ -2,6 +2,9 @@ package com.mk.workflow_engine.workflows.parsers;
 
 import com.mk.workflow_engine.exceptions.WorkflowParseException;
 import com.mk.workflow_engine.workflows.NodeDefinition;
+import com.mk.workflow_engine.workflows.WorkflowBuildContext;
+import com.mk.workflow_engine.workflows.WorkflowDefinition;
+import com.mk.workflow_engine.workflows.definitions.CaseNodeDefinition;
 import com.mk.workflow_engine.workflows.enums.NodeTypeEnum;
 import com.mk.workflow_engine.workflows.strategies.NodeParser;
 import org.springframework.stereotype.Component;
@@ -11,10 +14,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class CaseNodeJsonParser implements NodeParser<JsonNode> {
+public class CaseNodeJsonParser extends NodeParser<JsonNode> {
+
+
 
     @Override
-    public NodeDefinition parse(JsonNode input) {
+    public NodeDefinition parse(JsonNode input, WorkflowDefinition workflowDefinition) throws WorkflowParseException {
 
         String name = input.path("name").asText(null);
         JsonNode cases = input.path("cases");
@@ -27,14 +32,13 @@ public class CaseNodeJsonParser implements NodeParser<JsonNode> {
 
         Map<String,String> caseMap = new HashMap<>();
         cases.forEachEntry((key, value) ->
-                caseMap.put(key,value.asString())
+                caseMap.put(key,this.getLinkingId(workflowDefinition,value.asString()))
         );
-
         CaseNodeDefinition def = new CaseNodeDefinition();
         def.setName(name);
-        def.setType("case");
+        def.setType(NodeTypeEnum.CASE);
         def.setCases(caseMap);
-
+        def.setWorkflowId(workflowDefinition.getId());
         return def;
     }
 

@@ -11,16 +11,14 @@ import java.util.stream.Collectors;
 @Component
 public class WorkflowLoader {
     private final List<WorkflowDefinition> workflowDefinitions = new ArrayList<>();
-    private final Map<String,NodeDefinition> nodeDefinitions = new HashMap<>();
+
 // loads workflows from the storage and maintains the mapping of workflow names and the respective serialized representation
     public WorkflowLoader(WorkflowLoadingStrategy strategy) {
         workflowDefinitions.addAll(strategy.loadWorkflows());
-        nodeDefinitions.putAll(strategy.getNodes());
+//        nodeDefinitions.putAll(strategy.getNodes());
     }
     public Set<String> getWorkflowNames() {
-        return workflowDefinitions.stream().map(WorkflowDefinition::getName).collect(Collectors.toSet());
+        return workflowDefinitions.stream().map(WorkflowDefinition::getId).collect(Collectors.toSet());
     }
-    public NodeDefinition getNodeDefinition(String nodeId) {
-        return nodeDefinitions.get(nodeId);
-    }
+
 }
