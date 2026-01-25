@@ -5,9 +5,9 @@ import com.mk.workflow_engine.annotations.Node;
 
 @Node(
         type = "start",
-        id = "ORDER_START",
+        name = "START_ORDER_WORKFLOW",
         isRoot = true,
-        workflowName = "ORDER_PIPELINE"
+        workflowId = "order:ORDER_PIPELINE:1"
 )
 public class OrderPipelineStart extends WorkflowNode {
 public OrderPipelineStart() {

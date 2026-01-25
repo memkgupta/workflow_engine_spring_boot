@@ -16,8 +16,9 @@ public class StartNodeJsonParser extends NodeParser<JsonNode> {
 
     @Override
     public NodeDefinition parse(JsonNode input , WorkflowDefinition workflowDefinition) throws WorkflowParseException {
+        String nodeId = input.get("name").asString();
         StartNodeDefinition definition = new StartNodeDefinition();
-        definition.setName("START");
+        definition.setName(nodeId);
         definition.setType(NodeTypeEnum.START);
         definition.setWorkflowId(workflowDefinition.getId());
         definition.setNextId(this.getLinkingId(

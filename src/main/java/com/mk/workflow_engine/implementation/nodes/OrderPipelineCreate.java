@@ -9,9 +9,9 @@ import tools.jackson.databind.ObjectMapper;
 
 @Node(
         type = "task",
-        id = "CREATE_ORDER",
+        name = "CREATE_ORDER",
         isRoot = false,
-        workflowName = "ORDER_PIPELINE"
+        workflowId = "order:ORDER_PIPELINE:1"
 )
 public class OrderPipelineCreate extends WorkflowNode {
     public OrderPipelineCreate(OrderService orderService , ObjectMapper objectMapper) {

@@ -4,10 +4,10 @@ import com.mk.workflow_engine.WorkflowNode;
 import com.mk.workflow_engine.annotations.Node;
 
 @Node(
-        id = "ASSIGN_PRIORITY_PACKER",
+        name = "ASSIGN_PRIORITY_PACKER_TASK",
         isRoot = false,
         type = "task",
-        workflowName = "EXPRESS_SHIPPING"
+        workflowId = "shipping:EXPRESS_SHIPPING:1"
 )
 public class AssignPriorityPacker extends WorkflowNode {
     public AssignPriorityPacker() {

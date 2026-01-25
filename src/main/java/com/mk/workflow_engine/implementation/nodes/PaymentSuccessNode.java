@@ -9,9 +9,9 @@ import java.util.UUID;
 
 @Node(
         type = "condition",
-        id = "PAYMENT_SUCCESS?",
-        isRoot = true,
-        workflowName = "ORDER_PIPELINE"
+        name = "CHECK_PAYMENT_SUCCESS",
+        isRoot = false,
+        workflowId = "order:ORDER_PIPELINE:1"
 )
 public class PaymentSuccessNode extends ConditionNode {
     public PaymentSuccessNode(OrderService orderService) {

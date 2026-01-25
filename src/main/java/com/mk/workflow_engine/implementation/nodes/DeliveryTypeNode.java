@@ -11,9 +11,9 @@ import java.util.stream.Stream;
 
 @Node(
         type = "case",
-        id = "DELIVERY_TYPE",
+        name = "DELIVERY_TYPE",
         isRoot = true,
-        workflowName = "ORDER_PIPELINE"
+        workflowId = "order:ORDER_PIPELINE:1"
 )
 public class DeliveryTypeNode extends CaseNode<String> {
     public DeliveryTypeNode(OrderService orderService) {

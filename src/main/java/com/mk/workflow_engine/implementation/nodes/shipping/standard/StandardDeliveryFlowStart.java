@@ -4,10 +4,10 @@ import com.mk.workflow_engine.WorkflowNode;
 import com.mk.workflow_engine.annotations.Node;
 
 @Node(
-        id = "STANDARD_SHIPPING_START",
+        name = "START_STANDARD_SHIPPING",
         isRoot = true,
         type = "start",
-        workflowName = "STANDARD_SHIPPING"
+        workflowId = "shipping:STANDARD_SHIPPING:1"
 )
 public class StandardDeliveryFlowStart extends WorkflowNode {
     public StandardDeliveryFlowStart() {

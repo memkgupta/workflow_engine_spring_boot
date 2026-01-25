@@ -27,7 +27,7 @@ public class WorkflowNodeRegistry {
                 );
             }
 
-            String id = annotation.id();
+            String id = annotation.workflowId()+"#"+annotation.name();
             nodes.put(id,node);
 
         }

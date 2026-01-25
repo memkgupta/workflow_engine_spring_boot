@@ -4,10 +4,10 @@ import com.mk.workflow_engine.WorkflowNode;
 import com.mk.workflow_engine.annotations.Node;
 
 @Node(
-        id = "ASSIGN_NORMAL_PACKER",
+        name = "ASSIGN_NORMAL_PACKER_TASK",
         isRoot = false,
         type = "task",
-        workflowName = "STANDARD_SHIPPING"
+        workflowId = "shipping:STANDARD_SHIPPING:1"
 )
 public class AssignNormalPacker extends WorkflowNode {
     public AssignNormalPacker() {

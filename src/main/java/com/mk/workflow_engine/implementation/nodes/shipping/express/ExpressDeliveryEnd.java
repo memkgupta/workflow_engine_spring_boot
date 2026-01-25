@@ -4,10 +4,10 @@ import com.mk.workflow_engine.WorkflowNode;
 import com.mk.workflow_engine.annotations.Node;
 
 @Node(
-        id = "EXPRESS_SHIPPING_END",
+        name = "END_EXPRESS_SHIPPING",
         isRoot = false,
         type = "end",
-        workflowName = "EXPRESS_SHIPPING"
+        workflowId = "shipping:EXPRESS_SHIPPING:1"
 )
 public class ExpressDeliveryEnd extends WorkflowNode {
 

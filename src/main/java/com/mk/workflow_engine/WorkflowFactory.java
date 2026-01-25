@@ -44,8 +44,8 @@ public class WorkflowFactory {
                        "WorkflowNode bean " + node.getClass().getName() + " is missing @Node annotation"
                );
            }
-           String workflowName = annotation.workflowName();
-           String name = annotation.id();
+           String workflowName = annotation.workflowId();
+           String name = annotation.name();
            nodeMap.put(name,node);
            if(annotation.isRoot())
            {

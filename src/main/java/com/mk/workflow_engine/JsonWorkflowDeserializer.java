@@ -57,8 +57,8 @@ private final NodeParserFactory<JsonNode> nodeParserFactory;
         nodes.forEachEntry((key,value) -> {
             NodeDefinition parsedNode = parseNode(key, value, def);
 
-            parsedNodes.put(key,parsedNode);
-            nodeMap.put(key,value);
+            parsedNodes.put(parsedNode.getName(),parsedNode);
+            nodeMap.put(parsedNode.getName(),value);
 
         });
 
@@ -71,6 +71,10 @@ private final NodeParserFactory<JsonNode> nodeParserFactory;
         if (!json.has("type")) {
             throw new WorkflowParseException("Node '" + nodeName + "' missing type");
         }
+        if(!json.has("name") || !json.get("name").isValueNode()) {
+            throw new WorkflowParseException("Node '" + nodeName + "' missing name");
+        }
+        String nodeId =  json.get("name").asString();
         String type = json.get("type").asString();
         NodeTypeEnum nodeType = NodeTypeEnum.valueOf(type.toUpperCase());
         return nodeParserFactory.getParser(nodeType).parse(json,workflowDefinition);

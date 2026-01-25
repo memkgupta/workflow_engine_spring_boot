@@ -5,9 +5,9 @@ import com.mk.workflow_engine.annotations.Node;
 
 @Node(
         type = "task",
-        id = "PAYMENT_FAILED",
+        name = "HANDLE_PAYMENT_FAILURE",
         isRoot = false,
-        workflowName = "ORDER_PIPELINE"
+        workflowId = "order:ORDER_PIPELINE:1"
 )
 public class PaymentFailedNode extends WorkflowNode {
     public PaymentFailedNode() {

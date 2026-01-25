@@ -6,12 +6,13 @@ import com.mk.workflow_engine.implementation.OrderRequest;
 import com.mk.workflow_engine.implementation.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
 
-@Component
+@Configuration
 public class OrderPipelineNodes  {
     private final OrderService orderService;
     private final ObjectMapper objectMapper;
